@@ -1,6 +1,6 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
+const groundHeight = 60;
 // Bird
 const bird = {
     x: 80,
@@ -33,6 +33,20 @@ function updateBird() {
 function flap() {
     bird.velocity = bird.jump;
 }
+function drawBackground() {
+    // Sky
+    ctx.fillStyle = "#70c5ce";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Ground
+    ctx.fillStyle = "#ded895";
+    ctx.fillRect(
+        0,
+        canvas.height - groundHeight,
+        canvas.width,
+        groundHeight
+    );
+}
 
 document.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
@@ -44,7 +58,13 @@ canvas.addEventListener("click", flap);
 
 // Game loop
 function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground();
+
+    updateBird();
+    drawBird();
+
+    requestAnimationFrame(gameLoop);
+}
 
     updateBird();
     drawBird();
