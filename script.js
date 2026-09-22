@@ -81,6 +81,39 @@ function updatePipes() {
     // Remove pipes that leave the screen
     pipes = pipes.filter(pipe => pipe.x + pipeWidth > 0);
 }
+function checkCollision() {
+    for (const pipe of pipes) {
+
+        const birdRight = bird.x + bird.width;
+        const birdBottom = bird.y + bird.height;
+
+        const pipeRight = pipe.x + pipeWidth;
+
+        // Check if bird overlaps horizontally with pipe
+        const horizontalCollision =
+            birdRight > pipe.x &&
+            bird.x < pipeRight;
+
+        // Check if bird hits either pipe
+        const hitsTopPipe =
+            bird.y < pipe.topHeight;
+
+        const hitsBottomPipe =
+            birdBottom > pipe.bottomY;
+
+        if (
+            horizontalCollision &&
+            (hitsTopPipe || hitsBottomPipe)
+        ) {
+            resetGame();
+        }
+    }
+}
+function resetGame() {
+    bird.y = 250;
+    bird.velocity = 0;
+    pipes = [];
+}
 // Flap
 function flap() {
     bird.velocity = bird.jump;
@@ -113,8 +146,9 @@ function gameLoop() {
     drawBackground();
 
     updateBird();
-
     updatePipes();
+
+    checkCollision();
 
     drawPipes();
     drawBird();
