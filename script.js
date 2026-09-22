@@ -20,16 +20,26 @@ const bird = {
     velocity: 0,
     gravity: 0.5,
     jump: -8
+    angle: 0
 };
 
 // Draw the bird
 function drawBird() {
+    ctx.save();
+
+    ctx.translate(
+        bird.x + bird.width / 2,
+        bird.y + bird.height / 2
+    );
+
+    ctx.rotate(bird.angle);
+
     // Body
     ctx.fillStyle = "#FFD93D";
     ctx.beginPath();
     ctx.arc(
-        bird.x + bird.width / 2,
-        bird.y + bird.height / 2,
+        0,
+        0,
         bird.width / 2,
         0,
         Math.PI * 2
@@ -40,8 +50,8 @@ function drawBird() {
     ctx.fillStyle = "white";
     ctx.beginPath();
     ctx.arc(
-        bird.x + 21,
-        bird.y + 9,
+        7,
+        -9,
         6,
         0,
         Math.PI * 2
@@ -52,8 +62,8 @@ function drawBird() {
     ctx.fillStyle = "black";
     ctx.beginPath();
     ctx.arc(
-        bird.x + 23,
-        bird.y + 9,
+        9,
+        -9,
         3,
         0,
         Math.PI * 2
@@ -63,9 +73,9 @@ function drawBird() {
     // Beak
     ctx.fillStyle = "#FF8C00";
     ctx.beginPath();
-    ctx.moveTo(bird.x + bird.width, bird.y + 14);
-    ctx.lineTo(bird.x + bird.width + 10, bird.y + 18);
-    ctx.lineTo(bird.x + bird.width, bird.y + 22);
+    ctx.moveTo(15, -2);
+    ctx.lineTo(25, 2);
+    ctx.lineTo(15, 6);
     ctx.closePath();
     ctx.fill();
 
@@ -73,8 +83,8 @@ function drawBird() {
     ctx.fillStyle = "#F4B400";
     ctx.beginPath();
     ctx.ellipse(
-        bird.x + 10,
-        bird.y + 19,
+        -7,
+        7,
         9,
         5,
         0,
@@ -82,6 +92,8 @@ function drawBird() {
         Math.PI * 2
     );
     ctx.fill();
+
+    ctx.restore();
 }
 function drawPipes() {
     pipes.forEach(pipe => {
@@ -184,6 +196,10 @@ function createPipe() {
 function updateBird() {
     bird.velocity += bird.gravity;
     bird.y += bird.velocity;
+
+    // Tilt based on vertical movement
+    const targetAngle = bird.velocity * 0.05;
+    bird.angle += (targetAngle - bird.angle) * 0.1;
 
     // Check if bird touches the ground
     if (bird.y + bird.height >= canvas.height - groundHeight) {
@@ -353,6 +369,7 @@ function updateParticles() {
 function resetGame() {
     bird.y = 250;
     bird.velocity = 0;
+    bird.angle = 0;
     pipes = [];
     score = 0;
     gameOver = false;
