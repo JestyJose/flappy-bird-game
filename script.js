@@ -27,71 +27,108 @@ const bird = {
 function drawBird() {
     ctx.save();
 
+    // Move to bird center
     ctx.translate(
         bird.x + bird.width / 2,
         bird.y + bird.height / 2
     );
 
+    // Bird tilts while flying
     ctx.rotate(bird.angle);
 
-    // Body
-    ctx.fillStyle = "#FFD93D";
+    // --- Soft shadow ---
+    ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
     ctx.beginPath();
-    ctx.arc(
-        0,
-        0,
-        bird.width / 2,
-        0,
-        Math.PI * 2
-    );
+    ctx.ellipse(1, 14, 15, 5, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Eye
+    // --- Body outline ---
+    ctx.fillStyle = "#B8860B";
+    ctx.beginPath();
+    ctx.arc(0, 0, 17, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- Yellow body ---
+    ctx.fillStyle = "#FFD83D";
+    ctx.beginPath();
+    ctx.arc(0, -1, 15, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- Belly highlight ---
+    ctx.fillStyle = "#FFE978";
+    ctx.beginPath();
+    ctx.ellipse(-3, 3, 9, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- Wing outline ---
+    ctx.fillStyle = "#C99408";
+    ctx.beginPath();
+    ctx.ellipse(-8, 6, 11, 7, -0.25, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- Wing ---
+    ctx.fillStyle = "#F5B900";
+    ctx.beginPath();
+    ctx.ellipse(-8, 5, 9, 5.5, -0.25, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Wing detail
+    ctx.strokeStyle = "#D99D00";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-14, 5);
+    ctx.quadraticCurveTo(-8, 8, -3, 5);
+    ctx.stroke();
+
+    // --- Eye outline ---
+    ctx.fillStyle = "#222";
+    ctx.beginPath();
+    ctx.arc(7, -9, 7, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- Eye ---
     ctx.fillStyle = "white";
     ctx.beginPath();
-    ctx.arc(
-        7,
-        -9,
-        6,
-        0,
-        Math.PI * 2
-    );
+    ctx.arc(7, -9, 5.5, 0, Math.PI * 2);
     ctx.fill();
 
-    // Pupil
-    ctx.fillStyle = "black";
+    // --- Pupil ---
+    ctx.fillStyle = "#111";
     ctx.beginPath();
-    ctx.arc(
-        9,
-        -9,
-        3,
-        0,
-        Math.PI * 2
-    );
+    ctx.arc(8.5, -9, 3, 0, Math.PI * 2);
     ctx.fill();
 
-    // Beak
-    ctx.fillStyle = "#FF8C00";
+    // Eye shine
+    ctx.fillStyle = "white";
     ctx.beginPath();
-    ctx.moveTo(15, -2);
-    ctx.lineTo(25, 2);
-    ctx.lineTo(15, 6);
+    ctx.arc(9.5, -10, 1, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- Beak outline ---
+    ctx.fillStyle = "#C65D00";
+    ctx.beginPath();
+    ctx.moveTo(14, -2);
+    ctx.lineTo(26, 2);
+    ctx.lineTo(14, 8);
     ctx.closePath();
     ctx.fill();
 
-    // Wing
-    ctx.fillStyle = "#F4B400";
+    // --- Beak ---
+    ctx.fillStyle = "#FF8A00";
     ctx.beginPath();
-    ctx.ellipse(
-        -7,
-        7,
-        9,
-        5,
-        0,
-        0,
-        Math.PI * 2
-    );
+    ctx.moveTo(14, -3);
+    ctx.lineTo(25, 1);
+    ctx.lineTo(14, 4);
+    ctx.closePath();
     ctx.fill();
+
+    // Beak separation line
+    ctx.strokeStyle = "#A84D00";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(15, 1);
+    ctx.lineTo(23, 1);
+    ctx.stroke();
 
     ctx.restore();
 }
