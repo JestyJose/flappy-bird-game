@@ -66,10 +66,4 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-    updateBird();
-    drawBird();
-
-    requestAnimationFrame(gameLoop);
-}
-
 gameLoop();
