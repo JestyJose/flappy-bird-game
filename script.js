@@ -81,9 +81,10 @@ function drawBird() {
     ctx.fill();
 }
 function drawPipes() {
-    ctx.fillStyle = "#2ecc40";
-
     pipes.forEach(pipe => {
+        // Pipe body
+        ctx.fillStyle = "#2ecc40";
+
         // Top pipe
         ctx.fillRect(
             pipe.x,
@@ -98,6 +99,23 @@ function drawPipes() {
             pipe.bottomY,
             pipeWidth,
             canvas.height - groundHeight - pipe.bottomY
+        );
+
+        // Pipe caps
+        ctx.fillStyle = "#27ae38";
+
+        ctx.fillRect(
+            pipe.x - 5,
+            pipe.topHeight - 20,
+            pipeWidth + 10,
+            20
+        );
+
+        ctx.fillRect(
+            pipe.x - 5,
+            pipe.bottomY,
+            pipeWidth + 10,
+            20
         );
     });
 }
