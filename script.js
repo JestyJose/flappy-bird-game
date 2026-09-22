@@ -85,8 +85,20 @@ function drawBird() {
 }
 function drawPipes() {
     pipes.forEach(pipe => {
-        // Pipe body
-        ctx.fillStyle = "#2ecc40";
+        // Main pipe body
+        const pipeGradient = ctx.createLinearGradient(
+            pipe.x,
+            0,
+            pipe.x + pipeWidth,
+            0
+        );
+
+        pipeGradient.addColorStop(0, "#176B2C");
+        pipeGradient.addColorStop(0.25, "#39D353");
+        pipeGradient.addColorStop(0.55, "#72E35A");
+        pipeGradient.addColorStop(1, "#218C35");
+
+        ctx.fillStyle = pipeGradient;
 
         // Top pipe
         ctx.fillRect(
@@ -105,8 +117,21 @@ function drawPipes() {
         );
 
         // Pipe caps
-        ctx.fillStyle = "#27ae38";
+        const capGradient = ctx.createLinearGradient(
+            pipe.x - 5,
+            0,
+            pipe.x + pipeWidth + 5,
+            0
+        );
 
+        capGradient.addColorStop(0, "#1B7A30");
+        capGradient.addColorStop(0.3, "#45D957");
+        capGradient.addColorStop(0.6, "#7BEF68");
+        capGradient.addColorStop(1, "#249438");
+
+        ctx.fillStyle = capGradient;
+
+        // Top cap
         ctx.fillRect(
             pipe.x - 5,
             pipe.topHeight - 20,
@@ -114,11 +139,29 @@ function drawPipes() {
             20
         );
 
+        // Bottom cap
         ctx.fillRect(
             pipe.x - 5,
             pipe.bottomY,
             pipeWidth + 10,
             20
+        );
+
+        // Highlight
+        ctx.fillStyle = "rgba(255, 255, 255, 0.18)";
+
+        ctx.fillRect(
+            pipe.x + 8,
+            0,
+            7,
+            pipe.topHeight - 20
+        );
+
+        ctx.fillRect(
+            pipe.x + 8,
+            pipe.bottomY + 20,
+            7,
+            canvas.height - groundHeight - pipe.bottomY - 20
         );
     });
 }
