@@ -19,7 +19,7 @@ const bird = {
     height: 30,
     velocity: 0,
     gravity: 0.5,
-    jump: -8
+    jump: -8,
     angle: 0
 };
 
