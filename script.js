@@ -27,6 +27,12 @@ function drawBird() {
 function updateBird() {
     bird.velocity += bird.gravity;
     bird.y += bird.velocity;
+
+    // Check if bird touches the ground
+    if (bird.y + bird.height >= canvas.height - groundHeight) {
+        bird.y = canvas.height - groundHeight - bird.height;
+        bird.velocity = 0;
+    }
 }
 
 // Flap
