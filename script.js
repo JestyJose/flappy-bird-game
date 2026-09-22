@@ -6,6 +6,7 @@ const pipeGap = 150;
 const pipeSpeed = 2;
 
 let pipes = [];
+let score = 0;
 // Bird
 const bird = {
     x: 80,
@@ -56,9 +57,10 @@ function createPipe() {
         Math.random() * (maxHeight - minHeight) + minHeight;
 
     pipes.push({
-        x: canvas.width,
-        topHeight: topHeight,
-        bottomY: topHeight + pipeGap
+    x: canvas.width,
+    topHeight: topHeight,
+    bottomY: topHeight + pipeGap,
+    passed: false
     });
 }
 
@@ -80,6 +82,24 @@ function updatePipes() {
 
     // Remove pipes that leave the screen
     pipes = pipes.filter(pipe => pipe.x + pipeWidth > 0);
+}
+function updateScore() {
+    pipes.forEach(pipe => {
+        if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
+            score++;
+            pipe.passed = true;
+        }
+    });
+}function drawScore() {
+    ctx.fillStyle = "white";
+    ctx.font = "40px Arial";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        score,
+        canvas.width / 2,
+        60
+    );
 }
 function checkCollision() {
     for (const pipe of pipes) {
@@ -113,6 +133,7 @@ function resetGame() {
     bird.y = 250;
     bird.velocity = 0;
     pipes = [];
+    score = 0;
 }
 // Flap
 function flap() {
@@ -147,11 +168,13 @@ function gameLoop() {
 
     updateBird();
     updatePipes();
+    updateScore();
 
     checkCollision();
 
     drawPipes();
     drawBird();
+    drawScore();
 
     requestAnimationFrame(gameLoop);
 }
