@@ -2,7 +2,7 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const groundHeight = 60;
 const pipeWidth = 60;
-const pipeGap = 150;
+const pipeGap = 170;
 const pipeSpeed = 2;
 
 let pipes = [];
@@ -529,5 +529,5 @@ function gameLoop() {
 
     requestAnimationFrame(gameLoop);
 }
-setInterval(createPipe, 1800);
+setInterval(createPipe, 2600);
 gameLoop();
