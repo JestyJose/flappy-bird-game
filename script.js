@@ -8,6 +8,8 @@ const pipeSpeed = 2;
 let pipes = [];
 let score = 0;
 let gameOver = false;
+let particles = [];
+let collisionEffectTimer = 0;
 // Bird
 const bird = {
     x: 80,
@@ -225,10 +227,58 @@ function checkCollision() {
             horizontalCollision &&
             (hitsTopPipe || hitsBottomPipe)
         ) {
+            createCollisionEffect();
             gameOver = true;
         }
     }
 }
+function createCollisionEffect() {
+    particles = [];
+
+    for (let i = 0; i < 15; i++) {
+        particles.push({
+            x: bird.x + bird.width / 2,
+            y: bird.y + bird.height / 2,
+            size: Math.random() * 5 + 3,
+            velocityX: (Math.random() - 0.5) * 6,
+            velocityY: (Math.random() - 0.5) * 6,
+            life: 30
+        });
+    }
+
+    collisionEffectTimer = 30;
+}
+function updateParticles() {
+    particles.forEach(particle => {
+        particle.x += particle.velocityX;
+        particle.y += particle.velocityY;
+        particle.velocityY += 0.2;
+        particle.life--;
+    });
+
+    particles = particles.filter(
+        particle => particle.life > 0
+    );
+
+    if (collisionEffectTimer > 0) {
+        collisionEffectTimer--;
+    }
+}function drawParticles() {
+    particles.forEach(particle => {
+        ctx.fillStyle = "white";
+
+        ctx.beginPath();
+        ctx.arc(
+            particle.x,
+            particle.y,
+            particle.size,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+    });
+}
+
 //restarting the game
 function resetGame() {
     bird.y = 250;
@@ -280,8 +330,11 @@ function gameLoop() {
         checkCollision();
     }
 
+    updateParticles();
+
     drawPipes();
     drawBird();
+    drawParticles();
     drawScore();
     drawGameOver();
 
