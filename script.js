@@ -21,13 +21,64 @@ const bird = {
 
 // Draw the bird
 function drawBird() {
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(
-        bird.x,
-        bird.y,
-        bird.width,
-        bird.height
+    // Body
+    ctx.fillStyle = "#FFD93D";
+    ctx.beginPath();
+    ctx.arc(
+        bird.x + bird.width / 2,
+        bird.y + bird.height / 2,
+        bird.width / 2,
+        0,
+        Math.PI * 2
     );
+    ctx.fill();
+
+    // Eye
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(
+        bird.x + 21,
+        bird.y + 9,
+        6,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    // Pupil
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(
+        bird.x + 23,
+        bird.y + 9,
+        3,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    // Beak
+    ctx.fillStyle = "#FF8C00";
+    ctx.beginPath();
+    ctx.moveTo(bird.x + bird.width, bird.y + 14);
+    ctx.lineTo(bird.x + bird.width + 10, bird.y + 18);
+    ctx.lineTo(bird.x + bird.width, bird.y + 22);
+    ctx.closePath();
+    ctx.fill();
+
+    // Wing
+    ctx.fillStyle = "#F4B400";
+    ctx.beginPath();
+    ctx.ellipse(
+        bird.x + 10,
+        bird.y + 19,
+        9,
+        5,
+        0,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
 }
 function drawPipes() {
     ctx.fillStyle = "#2ecc40";
