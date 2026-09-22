@@ -162,7 +162,10 @@ function updateScore() {
             pipe.passed = true;
         }
     });
-}function drawScore() {
+}
+function drawScore() {
+    if (gameOver) return;
+
     ctx.fillStyle = "white";
     ctx.font = "40px Arial";
     ctx.textAlign = "center";
