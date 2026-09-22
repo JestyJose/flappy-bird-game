@@ -1,6 +1,11 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const groundHeight = 60;
+const pipeWidth = 60;
+const pipeGap = 150;
+const pipeSpeed = 2;
+
+let pipes = [];
 // Bird
 const bird = {
     x: 80,
@@ -22,6 +27,40 @@ function drawBird() {
         bird.height
     );
 }
+function drawPipes() {
+    ctx.fillStyle = "#2ecc40";
+
+    pipes.forEach(pipe => {
+        // Top pipe
+        ctx.fillRect(
+            pipe.x,
+            0,
+            pipeWidth,
+            pipe.topHeight
+        );
+
+        // Bottom pipe
+        ctx.fillRect(
+            pipe.x,
+            pipe.bottomY,
+            pipeWidth,
+            canvas.height - groundHeight - pipe.bottomY
+        );
+    });
+}
+function createPipe() {
+    const minHeight = 80;
+    const maxHeight = canvas.height - groundHeight - pipeGap - 80;
+
+    const topHeight =
+        Math.random() * (maxHeight - minHeight) + minHeight;
+
+    pipes.push({
+        x: canvas.width,
+        topHeight: topHeight,
+        bottomY: topHeight + pipeGap
+    });
+}
 
 // Update bird position
 function updateBird() {
@@ -34,7 +73,14 @@ function updateBird() {
         bird.velocity = 0;
     }
 }
+function updatePipes() {
+    pipes.forEach(pipe => {
+        pipe.x -= pipeSpeed;
+    });
 
+    // Remove pipes that leave the screen
+    pipes = pipes.filter(pipe => pipe.x + pipeWidth > 0);
+}
 // Flap
 function flap() {
     bird.velocity = bird.jump;
@@ -67,9 +113,13 @@ function gameLoop() {
     drawBackground();
 
     updateBird();
+
+    updatePipes();
+
+    drawPipes();
     drawBird();
 
     requestAnimationFrame(gameLoop);
 }
-
+setInterval(createPipe, 1800);
 gameLoop();
