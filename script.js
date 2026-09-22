@@ -331,20 +331,131 @@ function flap() {
     bird.velocity = bird.jump;
 }
 function drawBackground() {
-    // Sky
-    ctx.fillStyle = "#70c5ce";
+    // Sky gradient
+    const skyGradient = ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        canvas.height
+    );
+
+    skyGradient.addColorStop(0, "#4FC3F7");
+    skyGradient.addColorStop(1, "#B3E5FC");
+
+    ctx.fillStyle = skyGradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Ground
-    ctx.fillStyle = "#ded895";
+    // Clouds
+    drawCloud(70, 100, 0.8);
+    drawCloud(300, 150, 0.7);
+    drawCloud(200, 60, 0.5);
+
+    // Distant buildings
+    ctx.fillStyle = "rgba(70, 130, 180, 0.35)";
+
+    const buildings = [
+        { x: 0, width: 45, height: 100 },
+        { x: 50, width: 35, height: 140 },
+        { x: 90, width: 55, height: 80 },
+        { x: 150, width: 40, height: 125 },
+        { x: 195, width: 50, height: 95 },
+        { x: 250, width: 40, height: 145 },
+        { x: 295, width: 55, height: 90 },
+        { x: 355, width: 45, height: 120 }
+    ];
+
+    buildings.forEach(building => {
+        ctx.fillRect(
+            building.x,
+            canvas.height - groundHeight - building.height,
+            building.width,
+            building.height
+        );
+    });
+
+    // Trees / bushes
+    drawBush(35, canvas.height - groundHeight - 20, 35);
+    drawBush(100, canvas.height - groundHeight - 15, 40);
+    drawBush(180, canvas.height - groundHeight - 20, 35);
+    drawBush(270, canvas.height - groundHeight - 15, 45);
+    drawBush(350, canvas.height - groundHeight - 20, 40);
+
+    // Grass
+    ctx.fillStyle = "#4CAF50";
     ctx.fillRect(
         0,
         canvas.height - groundHeight,
         canvas.width,
-        groundHeight
+        12
     );
-}
 
+    // Dirt
+    ctx.fillStyle = "#A66A3F";
+    ctx.fillRect(
+        0,
+        canvas.height - groundHeight + 12,
+        canvas.width,
+        groundHeight - 12
+    );
+
+    // Small dirt spots
+    ctx.fillStyle = "#7D4B2A";
+
+    for (let i = 0; i < 20; i++) {
+        const x = (i * 37) % canvas.width;
+        const y =
+            canvas.height -
+            groundHeight +
+            25 +
+            ((i * 17) % 25);
+
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+function drawCloud(x, y, scale) {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        22 * scale,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.arc(
+        x + 25 * scale,
+        y - 10 * scale,
+        28 * scale,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.arc(
+        x + 50 * scale,
+        y,
+        22 * scale,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+}
+function drawBush(x, y, size) {
+    ctx.fillStyle = "#2E8B57";
+
+    ctx.beginPath();
+
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.arc(x + size * 0.7, y + 5, size * 0.8, 0, Math.PI * 2);
+    ctx.arc(x - size * 0.7, y + 5, size * 0.8, 0, Math.PI * 2);
+
+    ctx.fill();
+}
 document.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
         flap();
