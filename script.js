@@ -7,6 +7,7 @@ const pipeSpeed = 2;
 
 let pipes = [];
 let score = 0;
+let gameOver = false;
 // Bird
 const bird = {
     x: 80,
@@ -101,6 +102,36 @@ function updateScore() {
         60
     );
 }
+function drawGameOver() {
+    if (!gameOver) return;
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+
+    ctx.font = "40px Arial";
+    ctx.fillText(
+        "GAME OVER",
+        canvas.width / 2,
+        250
+    );
+
+    ctx.font = "25px Arial";
+    ctx.fillText(
+        `Score: ${score}`,
+        canvas.width / 2,
+        300
+    );
+
+    ctx.font = "18px Arial";
+    ctx.fillText(
+        "Click or press SPACE to restart",
+        canvas.width / 2,
+        350
+    );
+}
 function checkCollision() {
     for (const pipe of pipes) {
 
@@ -125,18 +156,25 @@ function checkCollision() {
             horizontalCollision &&
             (hitsTopPipe || hitsBottomPipe)
         ) {
-            resetGame();
+            gameOver = true;
         }
     }
 }
+//restarting the game
 function resetGame() {
     bird.y = 250;
     bird.velocity = 0;
     pipes = [];
     score = 0;
+    gameOver = false;
 }
 // Flap
 function flap() {
+    if (gameOver) {
+        resetGame();
+        return;
+    }
+
     bird.velocity = bird.jump;
 }
 function drawBackground() {
@@ -166,15 +204,17 @@ canvas.addEventListener("click", flap);
 function gameLoop() {
     drawBackground();
 
-    updateBird();
-    updatePipes();
-    updateScore();
-
-    checkCollision();
+    if (!gameOver) {
+        updateBird();
+        updatePipes();
+        updateScore();
+        checkCollision();
+    }
 
     drawPipes();
     drawBird();
     drawScore();
+    drawGameOver();
 
     requestAnimationFrame(gameLoop);
 }
