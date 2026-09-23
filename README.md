@@ -42,6 +42,13 @@ A browser-based Flappy Bird game built using HTML, CSS, and vanilla JavaScript w
 
 <img width="1337" height="958" alt="image" src="https://github.com/user-attachments/assets/691e2e67-b745-4e11-9664-89317908729c" />
 
+## 🧩 Challenges Faced
+
+- Implementing gravity and smooth bird movement
+- Creating collision detection between the bird and pipes
+- Generating pipes with randomized gaps
+- Managing game states such as start, gameplay, and game over
+- Creating visual effects such as bird rotation and collision particles
 ## 📂 Project Structure
 
 ```text
